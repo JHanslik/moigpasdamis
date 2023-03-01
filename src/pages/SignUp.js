@@ -5,8 +5,6 @@ const SignUp = () => {
   const [createCustomer, { data, loading, error, called }] =
     useMutation(CREATE_CUSTOMER);
 
-  console.log(called);
-
   const handleClick = () => {
     createCustomer({
       variables: {
