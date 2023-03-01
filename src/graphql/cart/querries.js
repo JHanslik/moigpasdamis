@@ -12,15 +12,26 @@ const GET_CART = gql`
           currencyCode
         }
       }
-      lines(first: 10) {
+      lines(first: 50) {
         edges {
           node {
+            id
+            quantity
             merchandise {
               ... on ProductVariant {
                 title
+                image {
+                  url
+                }
+                price {
+                  amount
+                  currencyCode
+                }
+                product {
+                  title
+                }
               }
             }
-            id
           }
         }
       }

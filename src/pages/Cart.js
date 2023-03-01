@@ -1,53 +1,88 @@
-import { useContext, useEffect } from "react"
+import { useContext } from "react"
+import { useQuery, useMutation } from "@apollo/client"
 
-import { useQuery } from "@apollo/client"
-import { useMutation } from "@apollo/client"
+import CartProduct from "../components/cart/CartProduct"
 
+import { CREATE_CHECKOUT } from "../graphql/checkout/mutations"
 import { GET_CART } from "../graphql/cart/querries"
-import { UPDATE_LINES_CART } from '../graphql/cart/mutations'
 import { CartContext } from "../contexts/cart"
 
 const Cart = () => {
-
-  // const [UpdateCart, { data, loading, error }] = useMutation(UPDATE_LINES_CART)
   const { cartId } = useContext(CartContext)
-  
   const { loading, error, data } = useQuery(GET_CART, {
-    variables: {cartId: cartId},
-  });
+    variables: { cartId: cartId },
+  })
 
-  
-  //   const handleClick = () => {
-    //     UpdateCart({
-      //       variables: {
-        //           cartId,
-        //           lines: [
-          //             {
-            //               attributes: [
-              //                 {
-                //                   key: "1",
-                //                   value: "UN"
-                //                 }
-                //               ],
-                //               id: "gid://shopify/CartLine/0c3cdd01-a205-4ee4-aa1d-bf191a79c8a5?cart=c1-518954cbbc3dd5e082815c516dc05b10",
-                //               quantity: 3
-                //             }
-                //           ]
-                //       }
-                //   })
-                // }
-                
-if (loading) {
-  return <p>Loading...</p>
-}
-console.log(data)
-return (
+  // const lineItems = data.cart.lines.edges.map((cartProduct) => {
+  //   return {
+  //     customAttributes: [
+  //       {
+  //         key: "key",
+  //         value: "value",
+  //       },
+  //     ],
+  //     quantity: cartProduct.node.quantity,
+  //     variantId: cartProduct.node.id,
+  //   }
+  // })
+  // const {
+  //   loading: checkoutLoading,
+  //   error: checkoutError,
+  //   data: checkoutData,
+  // } = useMutation(CREATE_CHECKOUT, {
+  //   variables: {
+  //     input: {
+  //       allowPartialAddresses: true,
+  //       buyerIdentity: {
+  //         countryCode: "",
+  //       },
+  //       customAttributes: [
+  //         {
+  //           key: "key",
+  //           value: "value",
+  //         },
+  //       ],
+  //       email: "",
+  //       lineItems,
+  //       note: "",
+  //       presentmentCurrencyCode: "",
+  //       shippingAddress: {
+  //         address1: "",
+  //         city: "Paris",
+  //         country: "France",
+  //         firstName: "",
+  //         lastName: "",
+  //         phone: "",
+  //         zip: "",
+  //       },
+  //     },
+  //   },
+  // })
+
+  const handleClick = () => {
+    console.log("aze")
+  }
+  if (loading) {
+    return <p>Loading...</p>
+  }
+  return (
     <>
-      <div>Cart</div>
-      {/* <button onClick={handleClick}>Cart</button> */}
+      {data?.cart.lines.edges.length > 0 ? (
+        data.cart.lines.edges.map((cartProduct) => {
+          return (
+            <CartProduct
+              key={cartProduct.node.id}
+              lineQuantity={cartProduct.node.quantity}
+              lineId={cartProduct.node.id}
+            />
+          )
+        })
+      ) : (
+        <p>Your cart is empty</p>
+      )}
+      <button onClick={handleClick}>Validate your Cart</button>
     </>
   )
 }
-
 
 export default Cart

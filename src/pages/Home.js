@@ -15,12 +15,13 @@ const Home = () => {
     <>
       <CollectionsList />
       {data.products.edges.map((product) => {
+        console.log(product)
         return (
           <div key={product.node.handle}>
-            <ProductCard />
-            <Link to={`product/${product.node.handle}`}>
-              <p>{product.node.title}</p>
-            </Link>
+            <ProductCard
+              productHandle={product.node.handle}
+              productTitle={product.node.title}
+            />
           </div>
         )
       })}
