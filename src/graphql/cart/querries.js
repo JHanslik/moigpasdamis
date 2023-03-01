@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client"
 
 const GET_CART = gql`
-  query GetCart($cartId: String!) {
+  query GetCart($cartId: ID!) {
     cart(id: $cartId) {
       id
       updatedAt
