@@ -11,6 +11,7 @@ import SignUp from "./pages/SignUp.js"
 import Login from "./pages/Login.js"
 import Collection from "./pages/Collection"
 import Profile from "./pages/Profile"
+import Cart from "./pages/Cart"
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
               <Route path="/signup" element={<SignUp />} />
               <Route path="/login" element={<Login />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/cart" element={<Cart/>} />
             </Routes>
           </BrowserRouter>
         </CartContextProvider>
