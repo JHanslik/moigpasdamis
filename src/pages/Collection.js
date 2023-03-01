@@ -17,7 +17,7 @@ if(loading) {
     )
   }
   return (
-    <p>Collection {data.collectionByHandle.products.edges[0].node.title}</p>
+    <p>Collection {data.collectionByHandle.title}</p>
   )
 }
 

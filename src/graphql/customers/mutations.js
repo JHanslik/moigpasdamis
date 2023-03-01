@@ -11,4 +11,25 @@ const CREATE_CUSTOMER = gql`
   }
 `;
 
-export { CREATE_CUSTOMER };
+const SIGNIN_CUSTOMER_CREDENTIALS = gql`
+mutation SignInWithEmailAndPassword(
+  $email: String!, 
+  $password: String!,
+) {
+  customerAccessTokenCreate(input: { 
+      email: $email, 
+      password: $password,
+  }) {
+      customerAccessToken {
+          accessToken
+          expiresAt
+      }
+      customerUserErrors {
+          code
+          message
+      }
+  }
+}
+`
+
+export { CREATE_CUSTOMER, SIGNIN_CUSTOMER_CREDENTIALS };
