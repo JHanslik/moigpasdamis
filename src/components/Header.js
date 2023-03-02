@@ -1,5 +1,6 @@
 import { useContext, useEffect } from "react"
 import { Link, NavLink } from "react-router-dom"
+import CollectionsList from "./CollectionsList"
 
 import { CartContext } from "../contexts/cart"
 
