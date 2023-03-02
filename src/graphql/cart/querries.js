@@ -19,6 +19,7 @@ const GET_CART = gql`
             quantity
             merchandise {
               ... on ProductVariant {
+                id
                 title
                 image {
                   url

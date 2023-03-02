@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useQuery, useMutation } from "@apollo/client"
 
 import CartProduct from "../components/cart/CartProduct"
@@ -12,62 +12,65 @@ const Cart = () => {
   const { loading, error, data } = useQuery(GET_CART, {
     variables: { cartId: cartId },
   })
+  const [createCheckout ,{loading: checkoutLoading, error: checkoutError, data: checkoutData}] = useMutation(CREATE_CHECKOUT)
 
-  // const lineItems = data.cart.lines.edges.map((cartProduct) => {
-  //   return {
-  //     customAttributes: [
-  //       {
-  //         key: "key",
-  //         value: "value",
-  //       },
-  //     ],
-  //     quantity: cartProduct.node.quantity,
-  //     variantId: cartProduct.node.id,
-  //   }
-  // })
-  // const {
-  //   loading: checkoutLoading,
-  //   error: checkoutError,
-  //   data: checkoutData,
-  // } = useMutation(CREATE_CHECKOUT, {
-  //   variables: {
-  //     input: {
-  //       allowPartialAddresses: true,
-  //       buyerIdentity: {
-  //         countryCode: "",
-  //       },
-  //       customAttributes: [
-  //         {
-  //           key: "key",
-  //           value: "value",
-  //         },
-  //       ],
-  //       email: "",
-  //       lineItems,
-  //       note: "",
-  //       presentmentCurrencyCode: "",
-  //       shippingAddress: {
-  //         address1: "",
-  //         city: "Paris",
-  //         country: "France",
-  //         firstName: "",
-  //         lastName: "",
-  //         phone: "",
-  //         zip: "",
-  //       },
-  //     },
-  //   },
-  // })
+  useEffect(() => {
+    if(checkoutData){
+      window.location.replace(checkoutData.checkoutCreate.checkout.webUrl)
+    }
+  }, [checkoutData])
 
   const handleClick = () => {
-    console.log("aze")
+    const lineItems = data?.cart?.lines.edges.map((cartProduct) => {
+      console.log(cartProduct.node.merchandise.id)
+      return {
+        customAttributes: [
+          {
+            key: "key",
+            value: "value",
+          },
+        ],
+        quantity: cartProduct.node.quantity,
+        variantId: cartProduct.node.merchandise.id,
+      }
+    })
+
+    createCheckout({
+      variables: {
+        input: {
+          allowPartialAddresses: true,
+          buyerIdentity: {
+            countryCode: "FR",
+          },
+          customAttributes: [
+            {
+              key: "key",
+              value: "value",
+            },
+          ],
+          email: "test@gmail.com",
+          lineItems,
+          note: "",
+          shippingAddress: {
+            address1: "",
+            city: "Paris",
+            country: "France",
+            firstName: "",
+            lastName: "",
+            phone: "",
+            zip: "",  
+          },
+        },
+      },
+    })
   }
+
   if (loading) {
     return <p>Loading...</p>
   }
   return (
     <>
-      {data?.cart.lines.edges.length > 0 ? (
+      {data.cart?.lines.edges.length > 0 ? (
         data.cart.lines.edges.map((cartProduct) => {
           return (
             <CartProduct
