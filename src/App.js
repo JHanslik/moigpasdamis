@@ -14,12 +14,15 @@ import Profile from "./pages/Profile"
 import Cart from "./pages/Cart"
 import Orders from "./pages/Orders"
 
+import Header from "./components/Header"
+
 const App = () => {
   return (
     <ApolloProvider client={client}>
       <CustomerContextProvider>
         <CartContextProvider>
           <BrowserRouter>
+            <Header />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/product/:handle" element={<Product />} />
