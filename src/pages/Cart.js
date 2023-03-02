@@ -15,7 +15,7 @@ import { CustomerContext } from "../contexts/customer"
 const Cart = () => {
   const navigate = useNavigate()
   const { customerAccessToken } = useContext(CustomerContext)
-  const { cartId } = useContext(CartContext)
+  const { cartId, cart } = useContext(CartContext)
   const { loading, error, data } = useQuery(GET_CART, {
     variables: { cartId: cartId },
   })
@@ -99,6 +99,8 @@ const Cart = () => {
   if (loading) {
     return <p>Loading...</p>
   }
+
+  console.log(cart)
 
   return (
     <>

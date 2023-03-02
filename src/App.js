@@ -15,6 +15,7 @@ import Cart from "./pages/Cart"
 import Orders from "./pages/Orders"
 
 import Header from "./components/Header"
+import MainContainer from "./components/MainContainer"
 
 const App = () => {
   return (
@@ -23,19 +24,18 @@ const App = () => {
         <CartContextProvider>
           <BrowserRouter>
             <Header />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/product/:handle" element={<Product />} />
-              <Route path="/collections/:handle" element={<Collection />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/orders" element={<Orders />} />
-            </Routes>
-            {/* <Link to="/">Home</Link>
-            <Link to="/cart">Cart</Link>
-            <Link to="/orders">Orders</Link> */}
+            <MainContainer>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/product/:handle" element={<Product />} />
+                <Route path="/collections/:handle" element={<Collection />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/orders" element={<Orders />} />
+              </Routes>
+            </MainContainer>
           </BrowserRouter>
         </CartContextProvider>
       </CustomerContextProvider>

@@ -8,7 +8,6 @@ import { GET_CART } from "../graphql/cart/queries"
 const CartContext = createContext({})
 
 const CartContextProvider = (props) => {
-  const [cartQuantities, setCartQuantities] = useState(0)
   const [cartId, setCartId] = useState("")
   const [cart, setCart] = useState(null)
 
@@ -76,10 +75,10 @@ const CartContextProvider = (props) => {
   }, [customerInfo, customerAccessToken, cart])
 
   const value = {
-    cartQuantities,
-    setCartQuantities,
     cartId,
     setCartId,
+    cart,
+    setCart,
   }
 
   return (
