@@ -10,6 +10,7 @@ const GET_PRODUCT = gql`
       collections(first: 10) {
           nodes{
               handle
+              title
               id
           }
       }

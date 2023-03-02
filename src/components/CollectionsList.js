@@ -8,14 +8,14 @@ const CollectionsList = () => {
   if (loading) {
     return <p>Loading...</p>
   }
-
+console.log(data)
   return (
     <>
       {data.collections.edges.map((collection) => {
         return (
           <div key={collection.node.title}>
             <Link to={`collections/${collection.node.handle}`}>
-              <p>{collection.node.title}</p>
+              <p class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Collections</p>
             </Link>
           </div>
         )
