@@ -28,8 +28,8 @@ const Login = () => {
   const handleClick = () => {
     SignInWithEmailAndPassword({
       variables: {
-        email: "benoit.paquier@konexio.eu",
-        password: "konexio",
+        email: "test3@gmail.com",
+        password: "testtest",
       },
     })
   }

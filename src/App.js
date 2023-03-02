@@ -1,6 +1,6 @@
 import client from "./graphql/client"
 import { ApolloProvider } from "@apollo/client"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
 
 import { CustomerContextProvider } from "./contexts/customer"
 import { CartContextProvider } from "./contexts/cart"
@@ -12,6 +12,7 @@ import Login from "./pages/Login.js"
 import Collection from "./pages/Collection"
 import Profile from "./pages/Profile"
 import Cart from "./pages/Cart"
+import Orders from "./pages/Orders"
 
 const App = () => {
   return (
@@ -26,8 +27,12 @@ const App = () => {
               <Route path="/signup" element={<SignUp />} />
               <Route path="/login" element={<Login />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/cart" element={<Cart/>} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/orders" element={<Orders />} />
             </Routes>
+            <Link to="/">Home</Link>
+            <Link to="/cart">Cart</Link>
+            <Link to="/orders">Orders</Link>
           </BrowserRouter>
         </CartContextProvider>
       </CustomerContextProvider>

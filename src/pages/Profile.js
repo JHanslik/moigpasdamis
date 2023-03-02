@@ -1,26 +1,23 @@
-import { GET_CUSTOMER_INFO } from "../graphql/customers/queries";
-import { useQuery } from "@apollo/client";
-import { useContext, useEffect } from "react";
-import { CustomerContext } from "../contexts/customer";
-
+import { GET_CUSTOMER_INFO } from "../graphql/customers/queries"
+import { useQuery } from "@apollo/client"
+import { useContext, useEffect } from "react"
+import { CustomerContext } from "../contexts/customer"
 
 const Profile = () => {
-
-  const { customerAccessToken, setCustomerInfo, customerInfo } = useContext(CustomerContext)
+  const { customerAccessToken, setCustomerInfo, customerInfo } =
+    useContext(CustomerContext)
 
   const { loading, error, data } = useQuery(GET_CUSTOMER_INFO, {
-    variables: {customerAccessToken: customerAccessToken},
-  });
-  
+    variables: { customerAccessToken },
+  })
+
   useEffect(() => {
-    if(data){
+    if (data) {
       setCustomerInfo(data.customer)
     }
   }, [data])
 
-  return (
-    <div>Profile</div>
-  )
+  return <div>Profile</div>
 }
 
 export default Profile
