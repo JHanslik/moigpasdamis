@@ -1,26 +1,48 @@
 import { useContext, useEffect, useState } from "react"
 import { useQuery, useMutation } from "@apollo/client"
+import { useNavigate } from "react-router-dom"
 
 import CartProduct from "../components/cart/CartProduct"
 
-import { CREATE_CHECKOUT } from "../graphql/checkout/mutations"
+import {
+  CREATE_CHECKOUT,
+  CUSTOMER_ASSOCIATE,
+} from "../graphql/checkout/mutations"
 import { GET_CART } from "../graphql/cart/querries"
 import { CartContext } from "../contexts/cart"
+import { CustomerContext } from "../contexts/customer"
 
 const Cart = () => {
+  const navigate = useNavigate()
+  const { customerAccessToken } = useContext(CustomerContext)
   const { cartId } = useContext(CartContext)
   const { loading, error, data } = useQuery(GET_CART, {
     variables: { cartId: cartId },
   })
-  const [createCheckout ,{loading: checkoutLoading, error: checkoutError, data: checkoutData}] = useMutation(CREATE_CHECKOUT)
+  const [
+    createCheckout,
+    { loading: checkoutLoading, error: checkoutError, data: checkoutData },
+  ] = useMutation(CREATE_CHECKOUT)
 
-  useEffect(() => {
-    if(checkoutData){
-      window.location.replace(checkoutData.checkoutCreate.checkout.webUrl)
+  const [
+    customerAssociate,
+    {
+      data: customerAssociateData,
+      error: customerAssociateError,
+      loading: customerAssociateLoading,
+    },
+  ] = useMutation(CUSTOMER_ASSOCIATE)
+
+  // useEffect(() => {
+  //   if (checkoutData) {
+  //     window.location.replace(checkoutData.checkoutCreate.checkout.webUrl)
+  //   }
+  // }, [checkoutData])
+
+  const handleClick = async () => {
+    if (customerAccessToken.length === 0) {
+      navigate("/login")
     }
-  }, [checkoutData])
-
-  const handleClick = () => {
     const lineItems = data?.cart?.lines.edges.map((cartProduct) => {
       console.log(cartProduct.node.merchandise.id)
       return {
@@ -35,7 +57,7 @@ const Cart = () => {
       }
     })
 
-    createCheckout({
+    const result = await createCheckout({
       variables: {
         input: {
           allowPartialAddresses: true,
@@ -58,16 +80,26 @@ const Cart = () => {
             firstName: "",
             lastName: "",
             phone: "",
-            zip: "",  
+            zip: "",
           },
         },
       },
     })
+    console.log(result)
+
+    const customerAssociateResult = await customerAssociate({
+      variables: {
+        checkoutId: result.data.checkoutCreate.checkout.id,
+        customerAccessToken,
+      },
+    })
+    console.log(customerAssociateResult)
   }
 
   if (loading) {
     return <p>Loading...</p>
   }
+
   return (
     <>
       {data.cart?.lines.edges.length > 0 ? (

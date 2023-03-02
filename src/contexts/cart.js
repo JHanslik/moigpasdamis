@@ -1,15 +1,39 @@
-import { createContext, useState, useEffect } from "react"
-import { useMutation } from "@apollo/client"
+import { createContext, useState, useEffect, useContext } from "react"
+import { useMutation, useQuery } from "@apollo/client"
 
-import { CREATE_CART } from "../graphql/cart/mutations"
+import { CustomerContext } from "./customer"
+
+import { CREATE_CART, UPDATE_BUYER_IDENTITY } from "../graphql/cart/mutations"
+
+import { GET_CART } from "../graphql/cart/querries"
 
 const CartContext = createContext({})
 
 const CartContextProvider = (props) => {
-  const [CartCreate, { data, loading, error }] = useMutation(CREATE_CART)
-
   const [cartQuantities, setCartQuantities] = useState(0)
   const [cartId, setCartId] = useState("")
+  const [cart, setCart] = useState(null)
+
+  const { customerInfo, customerAccessToken } = useContext(CustomerContext)
+
+  const [CartCreate, { data, loading, error }] = useMutation(CREATE_CART)
+  const [
+    cartBuyerIdentityUpdate,
+    {
+      data: cartBuyerIdentityUpdateData,
+      loading: cartBuyerIdentityUpdateLoading,
+      error: cartBuyerIdentityUpdateError,
+    },
+  ] = useMutation(UPDATE_BUYER_IDENTITY)
+
+  const {
+    loading: getCartLoading,
+    error: getCartError,
+    data: getCartData,
+  } = useQuery(GET_CART, {
+    variables: { cartId },
+    skip: !cartId,
+  })
 
   useEffect(() => {
     if (
@@ -19,9 +43,19 @@ const CartContextProvider = (props) => {
       const localStorageCartId = localStorage.getItem("cartId")
       setCartId(localStorageCartId)
     } else {
-     CartCreate()
+      CartCreate()
     }
   }, [])
+
+  useEffect(() => {
+    if (getCartData) {
+      if (getCartData.cart) {
+        setCart(getCartData.cart)
+      } else {
+        CartCreate()
+      }
+    }
+  }, [getCartData])
 
   useEffect(() => {
     if (data) {
@@ -29,6 +63,20 @@ const CartContextProvider = (props) => {
       setCartId(data.cartCreate.cart.id)
     }
   }, [data])
+
+  useEffect(() => {
+    if (customerInfo && customerAccessToken && cart) {
+      cartBuyerIdentityUpdate({
+        variables: {
+          buyerIdentity: {
+            customerAccessToken,
+          },
+          cartId: cart.id,
+        },
+      })
+    }
+  }, [customerInfo, customerAccessToken, cart])
+  console.log(cart)
 
   const value = {
     cartQuantities,

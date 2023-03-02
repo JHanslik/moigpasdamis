@@ -4,7 +4,7 @@ const CREATE_CHECKOUT = gql`
   mutation checkoutCreate($input: CheckoutCreateInput!) {
     checkoutCreate(input: $input) {
       checkout {
-        webUrl
+        id
       }
       checkoutUserErrors {
         field
@@ -15,4 +15,29 @@ const CREATE_CHECKOUT = gql`
     }
   }
 `
-export { CREATE_CHECKOUT }
+
+const CUSTOMER_ASSOCIATE = gql`
+  mutation checkoutCustomerAssociateV2(
+    $checkoutId: ID!
+    $customerAccessToken: String!
+  ) {
+    checkoutCustomerAssociateV2(
+      checkoutId: $checkoutId
+      customerAccessToken: $customerAccessToken
+    ) {
+      checkout {
+        webUrl
+      }
+      checkoutUserErrors {
+        field
+        message
+        code
+      }
+      customer {
+        id
+        email
+      }
+    }
+  }
+`
+export { CREATE_CHECKOUT, CUSTOMER_ASSOCIATE }

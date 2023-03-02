@@ -1,41 +1,11 @@
 import { gql } from "@apollo/client"
+import { CART_FRAGMENT } from "./fragments"
 
 const GET_CART = gql`
+  ${CART_FRAGMENT}
   query GetCart($cartId: ID!) {
     cart(id: $cartId) {
-      id
-      updatedAt
-      totalQuantity
-      cost {
-        totalAmount {
-          amount
-          currencyCode
-        }
-      }
-      lines(first: 50) {
-        edges {
-          node {
-            id
-            quantity
-            merchandise {
-              ... on ProductVariant {
-                id
-                title
-                image {
-                  url
-                }
-                price {
-                  amount
-                  currencyCode
-                }
-                product {
-                  title
-                }
-              }
-            }
-          }
-        }
-      }
+      ...cartFragment
     }
   }
 `
