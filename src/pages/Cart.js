@@ -8,7 +8,7 @@ import {
   CREATE_CHECKOUT,
   CUSTOMER_ASSOCIATE,
 } from "../graphql/checkout/mutations"
-import { GET_CART } from "../graphql/cart/querries"
+import { GET_CART } from "../graphql/cart/queries"
 import { CartContext } from "../contexts/cart"
 import { CustomerContext } from "../contexts/customer"
 

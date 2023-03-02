@@ -2,10 +2,8 @@ import { createContext, useState, useEffect, useContext } from "react"
 import { useMutation, useQuery } from "@apollo/client"
 
 import { CustomerContext } from "./customer"
-
 import { CREATE_CART, UPDATE_BUYER_IDENTITY } from "../graphql/cart/mutations"
-
-import { GET_CART } from "../graphql/cart/querries"
+import { GET_CART } from "../graphql/cart/queries"
 
 const CartContext = createContext({})
 
@@ -76,7 +74,6 @@ const CartContextProvider = (props) => {
       })
     }
   }, [customerInfo, customerAccessToken, cart])
-  console.log(cart)
 
   const value = {
     cartQuantities,

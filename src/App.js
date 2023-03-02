@@ -33,9 +33,9 @@ const App = () => {
               <Route path="/cart" element={<Cart />} />
               <Route path="/orders" element={<Orders />} />
             </Routes>
-            <Link to="/">Home</Link>
+            {/* <Link to="/">Home</Link>
             <Link to="/cart">Cart</Link>
-            <Link to="/orders">Orders</Link>
+            <Link to="/orders">Orders</Link> */}
           </BrowserRouter>
         </CartContextProvider>
       </CustomerContextProvider>

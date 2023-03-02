@@ -1,22 +1,16 @@
-import { GET_CUSTOMER_INFO } from "../graphql/customers/queries"
-import { useQuery } from "@apollo/client"
 import { useContext, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import { CustomerContext } from "../contexts/customer"
 
 const Profile = () => {
-  const { customerAccessToken, setCustomerInfo, customerInfo } =
-    useContext(CustomerContext)
-
-  const { loading, error, data } = useQuery(GET_CUSTOMER_INFO, {
-    variables: { customerAccessToken },
-  })
-
+  const navigate = useNavigate()
+  const { customerInfo } = useContext(CustomerContext)
   useEffect(() => {
-    if (data) {
-      setCustomerInfo(data.customer)
+    if (!customerInfo) {
+      navigate("/")
     }
-  }, [data])
-
+  }, [customerInfo])
+  console.log(customerInfo)
   return <div>Profile</div>
 }
 

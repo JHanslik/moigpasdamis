@@ -1,15 +1,30 @@
 import { useMutation } from "@apollo/client"
-import { SIGNIN_CUSTOMER_CREDENTIALS } from "../graphql/customers/mutations"
 import { useContext, useEffect } from "react"
-import { CustomerContext } from "../contexts/customer"
+import { useFormik } from "formik"
 import { useNavigate } from "react-router-dom"
+
+import { SIGNIN_CUSTOMER_CREDENTIALS } from "../graphql/customers/mutations"
+import { CustomerContext } from "../contexts/customer"
 
 const Login = () => {
   const navigate = useNavigate()
-  const { setCustomerAccessToken, customerAccessToken } =
-    useContext(CustomerContext)
+  const { setCustomerAccessToken, customerInfo } = useContext(CustomerContext)
   const [SignInWithEmailAndPassword, { data, loading, error, called }] =
     useMutation(SIGNIN_CUSTOMER_CREDENTIALS)
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    onSubmit: (values) => {
+      SignInWithEmailAndPassword({
+        variables: {
+          email: values.email,
+          password: values.password,
+        },
+      })
+    },
+  })
 
   useEffect(() => {
     if (data) {
@@ -20,25 +35,34 @@ const Login = () => {
   }, [data])
 
   useEffect(() => {
-    if (customerAccessToken.length > 0) {
+    if (customerInfo) {
       navigate("/profile")
     }
-  }, [customerAccessToken])
-
-  const handleClick = () => {
-    SignInWithEmailAndPassword({
-      variables: {
-        email: "test3@gmail.com",
-        password: "testtest",
-      },
-    })
-  }
+  }, [customerInfo])
 
   if (loading) {
     return <p>Loading...</p>
   }
 
-  return <button onClick={handleClick}>submit</button>
+  return (
+    <form onSubmit={formik.handleSubmit}>
+      <input
+        name="email"
+        type="email"
+        placeholder="Entrer votre email.."
+        value={formik.values.email}
+        onChange={formik.handleChange}
+      />
+      <input
+        name="password"
+        type="password"
+        placeholder="Entrer votre mot de passe"
+        value={formik.values.password}
+        onChange={formik.handleChange}
+      />
+      <button type="submit">Se connecter</button>
+    </form>
+  )
 }
 
 export default Login
