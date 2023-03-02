@@ -14,17 +14,21 @@ const Home = () => {
   return (
     <>
       <CollectionsList />
+      <div class="flex">
       {data.products.edges.map((product) => {
-        console.log(product)
+        // console.log(product.node.variants.edges[0].node.image.url)
         return (
-          <div key={product.node.handle}>
+          <div key={product.node.handle} >
             <ProductCard
               productHandle={product.node.handle}
               productTitle={product.node.title}
-            />
+              productCost={product.node.priceRange.maxVariantPrice.amount}
+              productImage={product.node.variants.edges[0].node.image.url}
+              />
           </div>
         )
       })}
+      </div>
     </>
   )
 }

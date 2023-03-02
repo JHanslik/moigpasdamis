@@ -6,6 +6,7 @@ const CORE_PRODUCT_FIELDS = gql`
         title
         handle
         description
+
     }
 `;
 
