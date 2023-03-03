@@ -13,6 +13,7 @@ import Collection from "./pages/Collection"
 import Profile from "./pages/Profile"
 import Cart from "./pages/Cart"
 import Orders from "./pages/Orders"
+import UpdateProfile from "./pages/UpdateProfile"
 
 import Header from "./components/Header"
 import MainContainer from "./components/MainContainer"
@@ -34,6 +35,7 @@ const App = () => {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/orders" element={<Orders />} />
+                <Route path="/update" element={<UpdateProfile />} />
               </Routes>
             </MainContainer>
           </BrowserRouter>
