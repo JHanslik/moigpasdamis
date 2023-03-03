@@ -10,6 +10,14 @@ const GET_COLLECTION = gql`
           node {
             title
             description
+            handle
+            priceRange {
+              maxVariantPrice {
+                  amount
+                  currencyCode
+              }
+             
+          }
             variants(first: 10) {
               edges {
                 node {
