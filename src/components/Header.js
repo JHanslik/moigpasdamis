@@ -1,18 +1,27 @@
 import { useContext, useEffect } from "react"
 import { Link, NavLink } from "react-router-dom"
-import CollectionsList from "./CollectionsList"
 
 import { CartContext } from "../contexts/cart"
+import { CustomerContext } from "../contexts/customer"
 
 const Header = () => {
-  const { cart, cartQuantities } = useContext(CartContext)
+  const { cart } = useContext(CartContext)
+  const { customerInfo, setCustomerInfo, setCustomerAccessToken } =
+    useContext(CustomerContext)
+
+  const disconnect = () => {
+    setCustomerInfo(null)
+    setCustomerAccessToken("")
+    localStorage.removeItem("customerAccessToken")
+  }
 
   return (
-    <nav className="bg-white px-2 sm:px-4 py-2.5 dark:bg-gray-900 w-full z-2border-b border-gray-200 dark:border-gray-600 min-h-[5vh]">
+    <nav className=" fixed top-0 left-0 bg-white px-2 sm:px-4 py-2.5 dark:bg-gray-900 w-full z-2border-b border-gray-200 dark:border-gray-600 min-h-[5vh]">
       <div className="container flex flex-wrap items-center justify-between mx-auto">
         <Link to="/" className="flex items-center">
           <img
-            src="https://flowbite.com/docs/images/logo.svg"
+            // src="https://flowbite.com/docs/images/logo.svg"
+            src="/moijaipasdamis.png"
             className="h-6 mr-3 sm:h-9"
             alt="Flowbite Logo"
           />
@@ -21,14 +30,24 @@ const Header = () => {
           </span>
         </Link>
         <div className="flex md:order-2">
-          <Link
-            to="/login"
-            className="ml-2 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700"
-          >
-            Se connecter
-          </Link>
+          {customerInfo ? (
+            <button
+              type="button"
+              onClick={disconnect}
+              className="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+            >
+              Se déconnecter
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Se connecter
+            </Link>
+          )}
         </div>
-        <div className="flex">
+        <div className="flex items-center">
           <div className="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
             <ul className="headerLinks flex flex-wrap -mb-px">
               <li className="mr-2">
@@ -52,7 +71,7 @@ const Header = () => {
           </div>
           <Link
             to="/cart"
-            className="relative inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            className="ml-5 relative inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -70,7 +89,7 @@ const Header = () => {
             </svg>
             <span className="sr-only">Notifications</span>
             Panier
-            <div className="absolute inline-flex items-center justify-center w-8 h-8 text-l font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">
+            <div className="absolute inline-flex items-center justify-center w-7 h-7 text-l font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">
               {cart?.totalQuantity}
             </div>
           </Link>
