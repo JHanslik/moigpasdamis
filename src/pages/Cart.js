@@ -1,124 +1,59 @@
 import { useContext, useEffect, useState } from "react"
-import { useQuery, useMutation } from "@apollo/client"
 import { useNavigate } from "react-router-dom"
 
 import CartProduct from "../components/cart/CartProduct"
 
-import {
-  CREATE_CHECKOUT,
-  CUSTOMER_ASSOCIATE,
-} from "../graphql/checkout/mutations"
-import { GET_CART } from "../graphql/cart/queries"
 import { CartContext } from "../contexts/cart"
 import { CustomerContext } from "../contexts/customer"
 
 const Cart = () => {
   const navigate = useNavigate()
-  const { customerAccessToken } = useContext(CustomerContext)
-  const { cartId, cart } = useContext(CartContext)
-  const { loading, error, data } = useQuery(GET_CART, {
-    variables: { cartId: cartId },
-  })
-  const [
-    createCheckout,
-    { loading: checkoutLoading, error: checkoutError, data: checkoutData },
-  ] = useMutation(CREATE_CHECKOUT)
-
-  const [
-    customerAssociate,
-    {
-      data: customerAssociateData,
-      error: customerAssociateError,
-      loading: customerAssociateLoading,
-    },
-  ] = useMutation(CUSTOMER_ASSOCIATE)
-
-  // useEffect(() => {
-  //   if (checkoutData) {
-  //     window.location.replace(checkoutData.checkoutCreate.checkout.webUrl)
-  //   }
-  // }, [checkoutData])
+  const { customerInfo } = useContext(CustomerContext)
+  const { cart } = useContext(CartContext)
 
   const handleClick = async () => {
-    if (customerAccessToken.length === 0) {
+    if (!customerInfo) {
       navigate("/login")
+    } else {
+      window.location.replace(cart.checkoutUrl)
     }
-    const lineItems = data?.cart?.lines.edges.map((cartProduct) => {
-      console.log(cartProduct.node.merchandise.id)
-      return {
-        customAttributes: [
-          {
-            key: "key",
-            value: "value",
-          },
-        ],
-        quantity: cartProduct.node.quantity,
-        variantId: cartProduct.node.merchandise.id,
-      }
-    })
-
-    const result = await createCheckout({
-      variables: {
-        input: {
-          allowPartialAddresses: true,
-          buyerIdentity: {
-            countryCode: "FR",
-          },
-          customAttributes: [
-            {
-              key: "key",
-              value: "value",
-            },
-          ],
-          email: "test@gmail.com",
-          lineItems,
-          note: "",
-          shippingAddress: {
-            address1: "",
-            city: "Paris",
-            country: "France",
-            firstName: "",
-            lastName: "",
-            phone: "",
-            zip: "",
-          },
-        },
-      },
-    })
-    console.log(result)
-
-    const customerAssociateResult = await customerAssociate({
-      variables: {
-        checkoutId: result.data.checkoutCreate.checkout.id,
-        customerAccessToken,
-      },
-    })
-    console.log(customerAssociateResult)
   }
 
-  if (loading) {
+  if (!cart) {
     return <p>Loading...</p>
   }
 
-  console.log(cart)
+  console.log(cart.lines.edges[0].node.merchandise.image.url)
 
   return (
-    <>
-      {data.cart?.lines.edges.length > 0 ? (
-        data.cart.lines.edges.map((cartProduct) => {
+    <div className="flex flex-col items-center">
+      {cart?.lines.edges.length > 0 ? (
+        cart.lines.edges.map((cartProduct) => {
           return (
             <CartProduct
               key={cartProduct.node.id}
               lineQuantity={cartProduct.node.quantity}
               lineId={cartProduct.node.id}
+              price={cartProduct.node.merchandise.price.amount}
+              title={
+                cartProduct.node.merchandise.title !== "Default Title"
+                  ? cartProduct.node.merchandise.title
+                  : cartProduct.node.merchandise.product.title
+              }
+              image={cartProduct.node.merchandise.image.url}
             />
           )
         })
       ) : (
         <p>Your cart is empty</p>
       )}
-      <button onClick={handleClick}>Validate your Cart</button>
-    </>
+      <button
+        onClick={handleClick}
+        className="focus:outline-none text-white bg-green-700 hover:bg-green-800  font-medium rounded-lg text-2xl px-5 py-2.5  dark:bg-green-600 dark:hover:bg-green-700 "
+      >
+        Validate your Cart
+      </button>
+    </div>
   )
 }
 
