@@ -8,6 +8,7 @@ const GET_CUSTOMER_ORDERS = gql`
           node {
             id
             name
+            customerUrl
             totalPrice {
               amount
               currencyCode

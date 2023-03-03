@@ -14,7 +14,6 @@ const Home = () => {
     <>
       <div className="flex flex-wrap justify-center">
         {data.products.edges.map((product) => {
-          // console.log(product.node.variants.edges[0].node.image.url)
           return (
             <div key={product.node.handle}>
               <ProductCard
