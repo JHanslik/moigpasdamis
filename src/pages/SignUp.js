@@ -25,23 +25,6 @@ const SignUp = () => {
   })
 
   return (
-    // <form onSubmit={formik.handleSubmit}>
-    //   <input
-    //     name="email"
-    //     type="email"
-    //     placeholder="Entrez votre email.."
-    //     value={formik.values.email}
-    //     onChange={formik.handleChange}
-    //   />
-    //   <input
-    //     name="password"
-    //     type="password"
-    //     placeholder="Entrez votre mot de passe.."
-    //     value={formik.values.password}
-    //     onChange={formik.handleChange}
-    //   />
-    //   <button type="submit">Valider</button>
-    // </form>
     <div className="flex justify-center items-center min-h-[80vh]">
       <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
         <form onSubmit={formik.handleSubmit} className="space-y-6" action="#">
@@ -50,7 +33,7 @@ const SignUp = () => {
           </h5>
           <div>
             <label
-              for="email"
+              htmlFor="email"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Email
@@ -68,7 +51,7 @@ const SignUp = () => {
           </div>
           <div>
             <label
-              for="password"
+              htmlFor="password"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Mot de passe
