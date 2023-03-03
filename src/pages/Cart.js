@@ -23,8 +23,6 @@ const Cart = () => {
     return <p>Loading...</p>
   }
 
-  console.log(cart.lines.edges[0].node.merchandise.image.url)
-
   return (
     <div className="flex flex-col items-center">
       {cart?.lines.edges.length > 0 ? (
