@@ -1,5 +1,6 @@
 import { useContext, useEffect } from "react"
 import { Link, NavLink } from "react-router-dom"
+import CollectionsList from "../components/CollectionsList"
 
 import { CartContext } from "../contexts/cart"
 import { CustomerContext } from "../contexts/customer"
@@ -59,6 +60,9 @@ const Header = () => {
                 </NavLink>
               </li>
               <li className="mr-2">
+               <CollectionsList/>
+              </li>
+              <li className="mr-2">
                 <NavLink
                   to="/profile"
                   className="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
@@ -87,7 +91,6 @@ const Header = () => {
                 d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
               />
             </svg>
-            <span className="sr-only">Notifications</span>
             Panier
             <div className="absolute inline-flex items-center justify-center w-7 h-7 text-l font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">
               {cart?.totalQuantity}
